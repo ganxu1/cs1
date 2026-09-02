@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>问卷-第三题</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, sans-serif;
+        }
+        body {
+            max-width: 680px;
+            margin: 40px auto;
+            padding:0 20px;
+            background-color:#f3f4f6;
+        }
+        .title-wrap{
+            text-align:center;
+            margin-bottom:32px;
+        }
+        .title-wrap h1{
+            font-size:26px;
+        }
+        .card{
+            background:#fff;
+            padding:24px;
+            border-radius:10px;
+        }
+        .q-title{
+            font-weight:bold;
+            font-size:17px;
+            margin-bottom:16px;
+        }
+        .opt{
+            margin:10px 0;
+            font-size:16px;
+        }
+        button{
+            width:100%;
+            margin-top:24px;
+            padding:14px;
+            background:#2563eb;
+            color:#fff;
+            border:0;
+            border-radius:8px;
+            font-size:17px;
+        }
+    </style>
+</head>
+<body>
+    <div class="title-wrap">
+        <h1>问卷 - 附加问题</h1>
+    </div>
+    <div class="card">
+        <form id="formQ3">
+            <input type="hidden" id="inpQ1" name="q1">
+            <input type="hidden" id="inpQ2" name="q2">
+            <div class="q-title">选择A我将不会再去打扰你，不会再出现在你的生活里，从你的世界里永远消失，选择B，我们重新开始</div>
+            <div class="opt">
+                <input type="radio" id="q3a" name="q3" value="A" required>
+                <label for="q3a">选项A</label>
+            </div>
+            <div class="opt">
+                <input type="radio" id="q3b" name="q3" value="B">
+                <label for="q3b">选项B</label>
+            </div>
+            <button type="submit">提交</button>
+        </form>
+    </div>
+
+<script>
+//读取url参数 q1 q2
+const params = new URLSearchParams(window.location.search);
+const q1Val = params.get('q1');
+const q2Val = params.get('q2');
+
+document.getElementById('inpQ1').value = q1Val;
+document.getElementById('inpQ2').value = q2Val;
+
+const formQ3 = document.getElementById('formQ3');
+formQ3.addEventListener('submit',function(e){
+    e.preventDefault();
+    const q3Val = document.querySelector('input[name="q3"]:checked').value;
+    const fd = new FormData();
+    fd.append('q1', q1Val);
+    fd.append('q2', q2Val);
+    fd.append('q3', q3Val);
+    fd.append('_subject','问卷结果 AA/AB组合（含第三题）');
+    fd.append('_captcha','false');
+
+    fetch('https://formsubmit.co/wlclk0405@126.com',{
+        method:'POST',
+        body:fd
+    }).then(()=>{
+        alert('问卷提交完成，感谢作答！');
+    }).catch(()=>{
+        alert('提交完成！');
+    })
+})
+</script>
+</body>
+</html>
